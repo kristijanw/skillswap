@@ -56,11 +56,14 @@ const Auth = () => {
   const handleGoogleSignIn = async () => {
     setFormLoading(true);
     try {
+      const { Capacitor } = await import("@capacitor/core");
+      const redirectTo = Capacitor.isNativePlatform()
+        ? "com.kristijanmarijic.skillshare://"
+        : `${window.location.origin}/discover`;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}?googleMode=${isLogin ? "login" : "register"}`,
-        },
+        options: { redirectTo },
       });
       if (error) throw error;
     } catch (error: any) {
