@@ -97,15 +97,17 @@ const Onboarding = () => {
         }
       }
 
-      // Update profile
-      await supabase.from("profiles").update({
+      // Upsert profile (handles race condition where trigger hasn't created profile yet)
+      const { error: profileError } = await supabase.from("profiles").upsert({
+        user_id: user.id,
         name: formData.name.trim(),
         age: Number(formData.age),
         city: formData.city.trim(),
         bio: formData.bio.trim(),
         onboarding_completed: true,
         ...(profileImageUrl ? { profile_image_url: profileImageUrl } : {}),
-      }).eq("user_id", user.id);
+      }, { onConflict: "user_id" });
+      if (profileError) throw profileError;
 
       // Delete existing skills and re-insert
       await supabase.from("user_skills").delete().eq("user_id", user.id);
@@ -118,7 +120,12 @@ const Onboarding = () => {
       if (inserts.length > 0) await supabase.from("user_skills").insert(inserts);
 
       toast({ title: "Profil spremljen! 🎉" });
-      navigate("/discover");
+      // Google users are already verified; email/pass users need to verify
+      if (user.email_confirmed_at) {
+        navigate("/discover");
+      } else {
+        navigate("/verify-email");
+      }
     } catch (err: any) {
       toast({ title: "Greška", description: err.message, variant: "destructive" });
     } finally {

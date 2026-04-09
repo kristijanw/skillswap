@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Star, MapPin, LogOut, Camera, Save, CheckCircle2 } from "lucide-react";
+import { Shield, Star, MapPin, LogOut, Camera, Save, CheckCircle2, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import BottomNav from "@/components/BottomNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/useProfile";
@@ -117,6 +118,20 @@ const Profile = () => {
     navigate("/");
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      await supabase.functions.invoke("delete-unregistered-user", {
+        headers: { Authorization: `Bearer ${session?.access_token}` },
+      });
+      await signOut();
+      navigate("/");
+      toast({ title: "Račun obrisan" });
+    } catch (err: any) {
+      toast({ title: "Greška", description: err.message, variant: "destructive" });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -185,6 +200,28 @@ const Profile = () => {
                 <LogOut className="h-5 w-5" />
                 <span className="font-medium">Odjava</span>
               </button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-card p-4 shadow-card text-destructive transition-colors hover:bg-destructive/10">
+                    <Trash2 className="h-5 w-5" />
+                    <span className="font-medium">Obriši račun</span>
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Obriši račun?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Ova radnja je nepovratna. Svi tvoji podaci, matchevi i poruke bit će trajno obrisani.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Odustani</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDeleteAccount} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                      Obriši
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </motion.div>
         ) : (

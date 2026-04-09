@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,12 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (!loading && user) {
+    if (!user.email_confirmed_at) return <Navigate to="/verify-email" replace />;
+    return <Navigate to="/discover" replace />;
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6">
@@ -33,30 +38,19 @@ const Index = () => {
           transition={{ delay: 0.4 }}
           className="mt-10 w-full max-w-xs space-y-3"
         >
-          {user ? (
-            <Button
-              onClick={() => navigate("/discover")}
-              className="h-14 w-full rounded-2xl text-base font-semibold gradient-warm text-primary-foreground border-0 shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
-            >
-              Otvori app <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          ) : (
-            <>
-              <Button
-                onClick={() => navigate("/auth")}
-                className="h-14 w-full rounded-2xl text-base font-semibold gradient-warm text-primary-foreground border-0 shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
-              >
-                Započni <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => navigate("/auth")}
-                className="w-full text-muted-foreground hover:text-foreground"
-              >
-                Već imam račun
-              </Button>
-            </>
-          )}
+          <Button
+            onClick={() => navigate("/auth")}
+            className="h-14 w-full rounded-2xl text-base font-semibold gradient-warm text-primary-foreground border-0 shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            Započni <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/auth?mode=login")}
+            className="w-full text-muted-foreground hover:text-foreground"
+          >
+            Već imam račun
+          </Button>
         </motion.div>
       </motion.div>
     </div>
