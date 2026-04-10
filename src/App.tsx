@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -5,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
@@ -18,7 +20,42 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  useEffect(() => {
+    let handle: any;
+
+    const setupDeepLink = async () => {
+      const { Capacitor } = await import("@capacitor/core");
+      if (!Capacitor.isNativePlatform()) return;
+
+      const { App: CapApp } = await import("@capacitor/app");
+      handle = await CapApp.addListener("appUrlOpen", async ({ url }) => {
+        if (!url.startsWith("com.kristijanmarijic.skillshare://")) return;
+
+        // PKCE flow → ?code=...
+        if (url.includes("code=")) {
+          await supabase.auth.exchangeCodeForSession(url);
+          return;
+        }
+
+        // Implicit flow → #access_token=...
+        const fragment = url.split("#")[1] ?? url.split("?")[1];
+        if (fragment) {
+          const params = new URLSearchParams(fragment);
+          const access_token = params.get("access_token");
+          const refresh_token = params.get("refresh_token");
+          if (access_token && refresh_token) {
+            await supabase.auth.setSession({ access_token, refresh_token });
+          }
+        }
+      });
+    };
+
+    setupDeepLink();
+    return () => { handle?.remove(); };
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
@@ -41,6 +78,7 @@ const App = () => (
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
