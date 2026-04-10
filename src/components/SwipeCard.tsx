@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
-import { MapPin, Shield, Star } from "lucide-react";
+import { MapPin, Shield, Star, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 export interface UserProfile {
   id: string;
@@ -23,6 +24,7 @@ interface SwipeCardProps {
 }
 
 const SwipeCard = ({ user, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) => {
+  const navigate = useNavigate();
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
   const likeOpacity = useTransform(x, [0, 100], [0, 1]);
@@ -70,6 +72,14 @@ const SwipeCard = ({ user, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) =
         >
           <span className="text-2xl font-bold text-destructive font-display">SKIP</span>
         </motion.div>
+
+        {/* Info button */}
+        <button
+          onClick={(e) => { e.stopPropagation(); navigate(`/user/${user.id}`); }}
+          className="absolute left-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm text-white"
+        >
+          <Info className="h-4 w-4" />
+        </button>
 
         {/* Trust badge */}
         {user.trustLevel >= 2 && (

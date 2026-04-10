@@ -137,15 +137,17 @@ const Matches = () => {
         ) : (
           <div className="space-y-2">
             {matches.map((match, i) => (
-              <motion.button
+              <motion.div
                 key={match.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                onClick={() => navigate(`/chat/${match.id}`)}
-                className="flex w-full items-center gap-3 rounded-xl bg-card p-3 shadow-card transition-colors hover:bg-secondary/50 text-left"
+                className="flex w-full items-center gap-3 rounded-xl bg-card p-3 shadow-card text-left"
               >
-                <div className="relative h-14 w-14 shrink-0">
+                <button
+                  onClick={() => navigate(`/user/${match.otherUser.user_id}`)}
+                  className="relative h-14 w-14 shrink-0"
+                >
                   <img
                     src={match.otherUser.profile_image_url ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${match.otherUser.user_id}`}
                     alt={match.otherUser.name}
@@ -156,8 +158,11 @@ const Matches = () => {
                       {match.unread > 9 ? "9+" : match.unread}
                     </span>
                   )}
-                </div>
-                <div className="flex-1 overflow-hidden">
+                </button>
+                <button
+                  onClick={() => navigate(`/chat/${match.id}`)}
+                  className="flex-1 overflow-hidden text-left"
+                >
                   <div className="flex items-center justify-between">
                     <h3 className={`font-semibold ${match.unread > 0 ? "text-foreground" : "text-foreground"}`}>{match.otherUser.name}</h3>
                     {match.lastMessageTime && (
@@ -172,8 +177,8 @@ const Matches = () => {
                       <Badge key={s} variant="secondary" className="text-[10px] px-1.5 py-0">{s}</Badge>
                     ))}
                   </div>
-                </div>
-              </motion.button>
+                </button>
+              </motion.div>
             ))}
           </div>
         )}

@@ -27,7 +27,7 @@ const Chat = () => {
   const { user } = useAuth();
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [otherUser, setOtherUser] = useState<{ name: string; image: string | null } | null>(null);
+  const [otherUser, setOtherUser] = useState<{ name: string; image: string | null; userId: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOtherTyping, setIsOtherTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -62,6 +62,7 @@ const Chat = () => {
       setOtherUser({
         name: profile?.name ?? "Korisnik",
         image: profile?.profile_image_url ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${otherId}`,
+        userId: otherId,
       });
 
       const { data: msgs } = await supabase
@@ -163,8 +164,10 @@ const Chat = () => {
         <button onClick={() => navigate("/matches")} className="text-foreground">
           <ArrowLeft className="h-6 w-6" />
         </button>
-        <img src={otherUser?.image ?? ""} alt={otherUser?.name ?? ""} className="h-10 w-10 rounded-full object-cover" />
-        <div className="flex-1 min-w-0">
+        <button onClick={() => otherUser && navigate(`/user/${otherUser.userId}`)} className="shrink-0">
+          <img src={otherUser?.image ?? ""} alt={otherUser?.name ?? ""} className="h-10 w-10 rounded-full object-cover" />
+        </button>
+        <button onClick={() => otherUser && navigate(`/user/${otherUser.userId}`)} className="flex-1 min-w-0 text-left">
           <h2 className="font-semibold text-foreground">{otherUser?.name}</h2>
           <AnimatePresence>
             {isOtherTyping && (
@@ -179,7 +182,7 @@ const Chat = () => {
               </motion.p>
             )}
           </AnimatePresence>
-        </div>
+        </button>
         <DropdownMenu>
           <DropdownMenuTrigger className="rounded-lg p-2 hover:bg-secondary">
             <span className="text-lg">⋮</span>
@@ -206,9 +209,13 @@ const Chat = () => {
               transition={{ delay: Math.min(i * 0.02, 0.3) }}
               className={`flex ${isMe ? "justify-end" : "justify-start"}`}
             >
-              <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${isMe ? "rounded-br-md bg-primary text-primary-foreground" : "rounded-bl-md bg-secondary text-secondary-foreground"}`}>
-                <p className="text-sm">{msg.content}</p>
-                <p className={`mt-1 text-[10px] ${isMe ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
+              <div className={`max-w-[75%] rounded-2xl ${/\.(gif|jpe?g|png|webp)(\?.*)?$/i.test(msg.content) ? "overflow-hidden p-0" : "px-4 py-2.5"} ${isMe ? "rounded-br-md bg-primary text-primary-foreground" : "rounded-bl-md bg-secondary text-secondary-foreground"}`}>
+                {/\.(gif|jpe?g|png|webp)(\?.*)?$/i.test(msg.content) ? (
+                  <img src={msg.content} alt="gif" className="max-w-full rounded-2xl" loading="lazy" />
+                ) : (
+                  <p className="text-sm">{msg.content}</p>
+                )}
+                <p className={`px-4 pb-2 text-[10px] ${isMe ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
                   {new Date(msg.created_at).toLocaleTimeString("hr-HR", { hour: "2-digit", minute: "2-digit" })}
                 </p>
               </div>

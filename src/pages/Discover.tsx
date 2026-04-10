@@ -36,7 +36,16 @@ const Discover = () => {
       .eq("liker_id", user.id);
     const likedIds = (likes ?? []).map((l) => l.liked_id);
 
-    const excludeIds = [...blockedIds, ...likedIds, user.id];
+    // Get already matched users
+    const { data: matchRows } = await supabase
+      .from("matches")
+      .select("user1_id, user2_id")
+      .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`);
+    const matchedIds = (matchRows ?? []).map((m) =>
+      m.user1_id === user.id ? m.user2_id : m.user1_id
+    );
+
+    const excludeIds = [...blockedIds, ...likedIds, ...matchedIds, user.id];
 
     // Fetch profiles with skills
     const { data: profiles } = await supabase
