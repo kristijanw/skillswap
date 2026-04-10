@@ -32,7 +32,7 @@ const SWIPE_THRESHOLD = 50;
 
 const Index = () => {
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  const { user, loading, isAdmin } = useAuth();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
   const [swiped, setSwiped] = useState(false);
@@ -47,7 +47,7 @@ const Index = () => {
 
   if (user) {
     if (!user.email_confirmed_at) return <Navigate to="/verify-email" replace />;
-    return <Navigate to="/discover" replace />;
+    return <Navigate to={isAdmin ? "/profile" : "/discover"} replace />;
   }
 
   const isLast = step === slides.length - 1;

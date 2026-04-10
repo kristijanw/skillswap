@@ -1,15 +1,21 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Flame, MessageCircle, User } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
-const navItems = [
-  { path: "/discover", icon: Flame, label: "Otkrij" },
-  { path: "/matches", icon: MessageCircle, label: "Poruke" },
-  { path: "/profile", icon: User, label: "Profil" },
+const allNavItems = [
+  { path: "/discover", icon: Flame, label: "Otkrij", adminOnly: false },
+  { path: "/matches", icon: MessageCircle, label: "Poruke", adminOnly: false },
+  { path: "/profile", icon: User, label: "Profil", adminOnly: false },
 ];
 
 const BottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isAdmin } = useAuth();
+
+  const navItems = isAdmin
+    ? allNavItems.filter((item) => item.path === "/profile")
+    : allNavItems;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card/80 backdrop-blur-xl">
