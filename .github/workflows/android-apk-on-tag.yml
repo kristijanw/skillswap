@@ -50,12 +50,23 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/skillshare-release.jks
 
+      - name: Set version from tag
+        run: |
+          TAG="${{ github.ref_name }}"
+          VERSION="${TAG#v}"
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          PATCH=$(echo $VERSION | cut -d. -f3)
+          VERSION_CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
+          echo "VERSION_NAME=$VERSION" >> $GITHUB_ENV
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
         working-directory: android
 
       - name: Build release AAB
-        run: ./gradlew bundleRelease
+        run: ./gradlew bundleRelease -PversionCode=${{ env.VERSION_CODE }} -PversionName=${{ env.VERSION_NAME }}
         working-directory: android
         env:
           KEYSTORE_PATH: skillshare-release.jks
