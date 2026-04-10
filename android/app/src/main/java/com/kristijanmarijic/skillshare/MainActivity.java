@@ -1,4 +1,4 @@
-package com.kristijanmarijic.skillshare;
+package hr.liait.skillshare;
 
 import com.getcapacitor.BridgeActivity;
 
