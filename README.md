@@ -28,7 +28,6 @@ Platforma je zamišljena kao lokalna zajednica učenja u kojoj svaki korisnik is
 - Portfolio radova s do 5 slika i videozapisom do 1 minute
 - Razine povjerenja (verificirani korisnici)
 - Prijava neprikladnog sadržaja
-- Admin panel za moderiranje
 
 ---
 
@@ -62,7 +61,6 @@ The platform is built around a local learning community where every user can be 
 - Work portfolio with up to 5 images and a video up to 1 minute
 - Trust levels for verified users
 - Report system for inappropriate content
-- Admin panel for moderation
 
 ---
 
