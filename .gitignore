@@ -23,6 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Keystore
+*.jks
+*.keystore
+
 # Environment variables
 .env
 .env.local
