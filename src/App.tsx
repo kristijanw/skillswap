@@ -30,7 +30,7 @@ const App = () => {
 
       const { App: CapApp } = await import("@capacitor/app");
       handle = await CapApp.addListener("appUrlOpen", async ({ url }) => {
-        if (!url.startsWith("com.kristijanmarijic.skillshare://")) return;
+        if (!url.startsWith("hr.liait.skillshare://")) return;
 
         // PKCE flow → ?code=...
         if (url.includes("code=")) {

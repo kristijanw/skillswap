@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.kristijanmarijic.skillshare',
+  appId: 'hr.liait.skillshare',
   appName: 'Skillshare',
   webDir: 'dist'
 };

@@ -58,7 +58,7 @@ const Auth = () => {
     try {
       const { Capacitor } = await import("@capacitor/core");
       const redirectTo = Capacitor.isNativePlatform()
-        ? "com.kristijanmarijic.skillshare://"
+        ? "hr.liait.skillshare://"
         : `${window.location.origin}/discover`;
 
       const { error } = await supabase.auth.signInWithOAuth({
