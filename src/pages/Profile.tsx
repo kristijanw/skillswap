@@ -14,7 +14,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-const trustLabels = ["", "Email verificiran", "Telefon verificiran", "Potpuno verificiran"];
+const trustLabels = ["", "Email verified", "Phone verified", "Fully verified"];
 const trustColors = ["", "bg-trust-1", "bg-trust-2", "bg-trust-3"];
 
 const Profile = () => {
@@ -114,9 +114,9 @@ const Profile = () => {
       setEditing(false);
       setImageFile(null);
       setImagePreview(null);
-      toast({ title: "Profil ažuriran! ✅" });
+      toast({ title: "Profile updated! ✅" });
     } catch (err: any) {
-      toast({ title: "Greška", description: err.message, variant: "destructive" });
+      toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {
       setSaving(false);
     }
@@ -130,7 +130,7 @@ const Profile = () => {
   const handleDeleteAccount = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error("Nisi prijavljen");
+      if (!session) throw new Error("Not logged in");
 
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-unregistered-user`, {
         method: "POST",
@@ -146,9 +146,9 @@ const Profile = () => {
 
       await signOut();
       navigate("/");
-      toast({ title: "Račun obrisan" });
+      toast({ title: "Account deleted" });
     } catch (err: any) {
-      toast({ title: "Greška pri brisanju računa", description: err.message, variant: "destructive" });
+      toast({ title: "Error deleting account", description: err.message, variant: "destructive" });
     }
   };
 
@@ -209,13 +209,13 @@ const Profile = () => {
             <div className="mt-6 space-y-4">
               {teachSkills.length > 0 && (
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-foreground font-display">Mogu naučiti</h3>
+                  <h3 className="mb-2 text-sm font-semibold text-foreground font-display">I can teach</h3>
                   <div className="flex flex-wrap gap-2">{teachSkills.map((s) => <Badge key={s} className="bg-primary text-primary-foreground border-0">{s}</Badge>)}</div>
                 </div>
               )}
               {learnSkills.length > 0 && (
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-foreground font-display">Želim naučiti</h3>
+                  <h3 className="mb-2 text-sm font-semibold text-foreground font-display">I want to learn</h3>
                   <div className="flex flex-wrap gap-2">{learnSkills.map((s) => <Badge key={s} variant="outline" className="border-primary/30 text-foreground">{s}</Badge>)}</div>
                 </div>
               )}
@@ -232,31 +232,31 @@ const Profile = () => {
               {isAdmin && (
                 <button onClick={() => navigate("/admin")} className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary/10 p-4 text-primary transition-colors hover:bg-primary/20">
                   <ShieldCheck className="h-5 w-5" />
-                  <span className="font-medium">Admin panel</span>
+                  <span className="font-medium">Admin Panel</span>
                 </button>
               )}
               <button onClick={handleSignOut} className="flex w-full items-center justify-center gap-2 rounded-xl bg-card p-4 shadow-card text-foreground transition-colors hover:bg-secondary">
                 <LogOut className="h-5 w-5" />
-                <span className="font-medium">Odjava</span>
+                <span className="font-medium">Sign out</span>
               </button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-destructive/30 p-3 text-destructive/70 text-sm transition-colors hover:bg-destructive/5">
                     <Trash2 className="h-4 w-4" />
-                    <span>Obriši račun</span>
+                    <span>Delete account</span>
                   </button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Obriši račun?</AlertDialogTitle>
+                    <AlertDialogTitle>Delete account?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Ova radnja je nepovratna. Svi tvoji podaci, matchevi i poruke bit će trajno obrisani.
+                      This action is irreversible. All your data, matches and messages will be permanently deleted.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Odustani</AlertDialogCancel>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction onClick={handleDeleteAccount} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                      Obriši
+                      Delete
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -267,15 +267,15 @@ const Profile = () => {
           /* Edit mode - classic form */
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 space-y-5">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-foreground">Ime</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground">Name</label>
               <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="rounded-xl" />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-foreground">Dob</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground">Age</label>
               <Input type="number" value={form.age} onChange={(e) => setForm({ ...form, age: e.target.value })} min={18} className="rounded-xl" />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-foreground">Grad</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground">City</label>
               <Input value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="rounded-xl" />
             </div>
             <div>
@@ -285,7 +285,7 @@ const Profile = () => {
             </div>
 
             <div>
-              <h3 className="mb-2 text-sm font-semibold text-foreground">Mogu naučiti</h3>
+              <h3 className="mb-2 text-sm font-semibold text-foreground">I can teach</h3>
               <div className="flex flex-wrap gap-2">
                 {allSkills.map((skill) => {
                   const selected = selectedTeach.includes(skill.name);
@@ -298,7 +298,7 @@ const Profile = () => {
               </div>
             </div>
             <div>
-              <h3 className="mb-2 text-sm font-semibold text-foreground">Želim naučiti</h3>
+              <h3 className="mb-2 text-sm font-semibold text-foreground">I want to learn</h3>
               <div className="flex flex-wrap gap-2">
                 {allSkills.map((skill) => {
                   const selected = selectedLearn.includes(skill.name);
@@ -313,11 +313,11 @@ const Profile = () => {
 
             <div className="flex gap-3 pt-2">
               <Button variant="outline" onClick={() => { setEditing(false); setImageFile(null); setImagePreview(null); }} className="flex-1 rounded-xl h-12">
-                Odustani
+                Cancel
               </Button>
               <Button onClick={handleSave} disabled={saving || !form.name.trim()} className="flex-1 rounded-xl h-12 gradient-warm text-primary-foreground border-0">
                 <Save className="mr-2 h-4 w-4" />
-                {saving ? "Spremam..." : "Spremi"}
+                {saving ? "Saving..." : "Save"}
               </Button>
             </div>
           </motion.div>

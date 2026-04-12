@@ -60,7 +60,7 @@ const Chat = () => {
         .single();
 
       setOtherUser({
-        name: profile?.name ?? "Korisnik",
+        name: profile?.name ?? "User",
         image: profile?.profile_image_url ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${otherId}`,
         userId: otherId,
       });
@@ -136,8 +136,8 @@ const Chat = () => {
     const { data: match } = await supabase.from("matches").select("*").eq("id", matchId).single();
     if (!match) return;
     const otherId = match.user1_id === user.id ? match.user2_id : match.user1_id;
-    await supabase.from("reports").insert({ reporter_id: user.id, reported_user_id: otherId, reason: "Prijavljeno iz chata" });
-    toast({ title: "Prijava poslana", description: "Pregledamo korisnika." });
+    await supabase.from("reports").insert({ reporter_id: user.id, reported_user_id: otherId, reason: "Reported from chat" });
+    toast({ title: "Report submitted", description: "We'll review this user." });
   };
 
   const handleBlock = async () => {
@@ -146,7 +146,7 @@ const Chat = () => {
     if (!match) return;
     const otherId = match.user1_id === user.id ? match.user2_id : match.user1_id;
     await supabase.from("blocks").insert({ blocker_id: user.id, blocked_id: otherId });
-    toast({ title: "Korisnik blokiran", description: "Više nećeš vidjeti ovog korisnika." });
+    toast({ title: "User blocked", description: "You won't see this user anymore." });
     navigate("/matches");
   };
 
@@ -178,7 +178,7 @@ const Chat = () => {
                 transition={{ duration: 0.15 }}
                 className="text-[10px] text-muted-foreground leading-none"
               >
-                tipka...
+                typing...
               </motion.p>
             )}
           </AnimatePresence>
@@ -189,10 +189,10 @@ const Chat = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={handleReport} className="text-destructive">
-              <Flag className="mr-2 h-4 w-4" /> Prijavi korisnika
+              <Flag className="mr-2 h-4 w-4" /> Report user
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleBlock} className="text-destructive">
-              <Ban className="mr-2 h-4 w-4" /> Blokiraj
+              <Ban className="mr-2 h-4 w-4" /> Block
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -258,7 +258,7 @@ const Chat = () => {
             value={newMessage}
             onChange={handleTyping}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Napiši poruku..."
+            placeholder="Write a message..."
             className="flex-1 rounded-full border-border bg-secondary"
           />
           <button

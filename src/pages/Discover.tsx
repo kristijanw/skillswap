@@ -115,12 +115,12 @@ const Discover = () => {
           if (match) {
             toast({
               title: "🎉 Match!",
-              description: `Ti i ${targetUser.name} ste matchali! Započni razgovor.`,
+              description: `You and ${targetUser.name} matched! Start a conversation.`,
             });
           } else {
             toast({
-              title: "💫 Zainteresiran/a!",
-              description: `Ako se ${targetUser.name} složi, imat ćete match!`,
+              title: "💫 Interested!",
+              description: `If ${targetUser.name} likes you back, you'll have a match!`,
             });
           }
         }
@@ -154,9 +154,9 @@ const Discover = () => {
             <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-secondary">
               <RotateCcw className="h-8 w-8 text-muted-foreground" />
             </div>
-            <h2 className="text-xl font-bold font-display text-foreground">Nema više profila</h2>
+            <h2 className="text-xl font-bold font-display text-foreground">No more profiles</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Vrati se kasnije za nove ljude u tvojoj okolici!
+              Check back later for new people in your area!
             </p>
           </motion.div>
         ) : (

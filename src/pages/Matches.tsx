@@ -76,7 +76,7 @@ const Matches = () => {
         id: m.id,
         otherUser: {
           user_id: otherId,
-          name: profile?.name ?? "Korisnik",
+          name: profile?.name ?? "User",
           profile_image_url: profile?.profile_image_url,
           skillsTeach: userSkills,
         },
@@ -124,15 +124,15 @@ const Matches = () => {
   return (
     <div className="flex h-screen flex-col bg-background overflow-hidden">
       <header className="px-5 pb-4 pt-[max(1rem,env(safe-area-inset-top))] shrink-0">
-        <h1 className="text-2xl font-bold font-display text-foreground">Razgovori</h1>
-        <p className="text-sm text-muted-foreground">Tvoji matchevi i poruke</p>
+        <h1 className="text-2xl font-bold font-display text-foreground">Messages</h1>
+        <p className="text-sm text-muted-foreground">Your matches and conversations</p>
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 pb-24">
         {matches.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <p className="text-lg font-semibold text-foreground">Još nema matcheva</p>
-            <p className="mt-1 text-sm text-muted-foreground">Nastavi swipati da pronađeš ljude!</p>
+            <p className="text-lg font-semibold text-foreground">No matches yet</p>
+            <p className="mt-1 text-sm text-muted-foreground">Keep swiping to find people!</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -170,7 +170,7 @@ const Matches = () => {
                     )}
                   </div>
                   <p className={`truncate text-sm ${match.unread > 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}>
-                    {match.lastMessage ?? "Započni razgovor! 👋"}
+                    {match.lastMessage ?? "Start a conversation! 👋"}
                   </p>
                   <div className="mt-1 flex gap-1">
                     {match.otherUser.skillsTeach.slice(0, 2).map((s) => (

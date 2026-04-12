@@ -10,11 +10,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
 const steps = [
-  { title: "O tebi", subtitle: "Ime, dob i grad" },
-  { title: "Mogu naučiti", subtitle: "Koje vještine možeš podijeliti?" },
-  { title: "Želim naučiti", subtitle: "Što želiš naučiti?" },
-  { title: "Profilna slika", subtitle: "Dodaj svoju fotografiju" },
-  { title: "Zadnji korak", subtitle: "Bio i sigurnosni savjeti" },
+  { title: "About you", subtitle: "Name, age and city" },
+  { title: "I can teach", subtitle: "Which skills can you share?" },
+  { title: "I want to learn", subtitle: "What do you want to learn?" },
+  { title: "Profile photo", subtitle: "Add your photo" },
+  { title: "Last step", subtitle: "Bio and safety tips" },
 ];
 
 const Onboarding = () => {
@@ -97,7 +97,7 @@ const Onboarding = () => {
         setOnboardingCompleted(true);
         navigate("/discover");
       } catch (err: any) {
-        toast({ title: "Greška", description: err.message, variant: "destructive" });
+        toast({ title: "Error", description: err.message, variant: "destructive" });
       } finally {
         setSaving(false);
       }
@@ -118,7 +118,7 @@ const Onboarding = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 5 * 1024 * 1024) {
-      toast({ title: "Slika prevelika", description: "Maksimalno 5MB", variant: "destructive" });
+      toast({ title: "Image too large", description: "Maximum 5MB", variant: "destructive" });
       return;
     }
     setImageFile(file);
@@ -175,7 +175,7 @@ const Onboarding = () => {
         }
       }
 
-      if (!currentUser) throw new Error("Korisnik nije pronađen");
+      if (!currentUser) throw new Error("User not found");
 
       // Upload image
       let profileImageUrl: string | null = null;
@@ -211,7 +211,7 @@ const Onboarding = () => {
       if (inserts.length > 0) await supabase.from("user_skills").insert(inserts);
 
       setOnboardingCompleted(true);
-      toast({ title: "Profil spremljen! 🎉" });
+      toast({ title: "Profile saved! 🎉" });
 
       // Google users are already verified
       if (currentUser.email_confirmed_at) {
@@ -220,7 +220,7 @@ const Onboarding = () => {
         navigate("/verify-email");
       }
     } catch (err: any) {
-      toast({ title: "Greška", description: err.message, variant: "destructive" });
+      toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {
       setSaving(false);
     }
@@ -272,16 +272,16 @@ const Onboarding = () => {
               {step === 0 && (
                 <div className="space-y-5">
                   <div>
-                    <label className="mb-1.5 block text-sm font-medium text-foreground">Ime</label>
-                    <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Tvoje ime" className="rounded-xl" />
+                    <label className="mb-1.5 block text-sm font-medium text-foreground">Name</label>
+                    <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Your name" className="rounded-xl" />
                   </div>
                   <div>
-                    <label className="mb-1.5 block text-sm font-medium text-foreground">Dob</label>
+                    <label className="mb-1.5 block text-sm font-medium text-foreground">Age</label>
                     <Input type="number" value={formData.age} onChange={(e) => setFormData({ ...formData, age: e.target.value })} placeholder="18+" min={18} className="rounded-xl" />
-                    {formData.age && Number(formData.age) < 18 && <p className="mt-1 text-xs text-destructive">Moraš imati 18+ godina</p>}
+                    {formData.age && Number(formData.age) < 18 && <p className="mt-1 text-xs text-destructive">You must be 18 or older</p>}
                   </div>
                   <div>
-                    <label className="mb-1.5 block text-sm font-medium text-foreground">Grad</label>
+                    <label className="mb-1.5 block text-sm font-medium text-foreground">City</label>
                     <Input value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} placeholder="Zagreb" className="rounded-xl" />
                   </div>
                 </div>
@@ -327,37 +327,37 @@ const Onboarding = () => {
                     ) : (
                       <div className="flex flex-col items-center gap-2 text-muted-foreground">
                         <Camera className="h-10 w-10" />
-                        <span className="text-xs font-medium">Dodaj sliku</span>
+                        <span className="text-xs font-medium">Add photo</span>
                       </div>
                     )}
                   </button>
                   <Button variant="outline" onClick={() => fileInputRef.current?.click()} className="rounded-xl">
                     <Upload className="mr-2 h-4 w-4" />
-                    {imagePreview ? "Promijeni sliku" : "Odaberi sliku"}
+                    {imagePreview ? "Change photo" : "Choose photo"}
                   </Button>
-                  <p className="text-xs text-muted-foreground text-center">Opcionalno · Maksimalno 5MB</p>
+                  <p className="text-xs text-muted-foreground text-center">Optional · Maximum 5MB</p>
                 </div>
               )}
 
               {step === 4 && (
                 <div className="space-y-5">
                   <div>
-                    <label className="mb-1.5 block text-sm font-medium text-foreground">Bio (opcionalno)</label>
+                    <label className="mb-1.5 block text-sm font-medium text-foreground">Bio (optional)</label>
                     <Textarea
                       value={formData.bio}
                       onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                      placeholder="Reci nešto o sebi..."
+                      placeholder="Tell us something about yourself..."
                       className="rounded-xl min-h-[100px]"
                       maxLength={300}
                     />
                     <p className="mt-1 text-xs text-muted-foreground text-right">{formData.bio.length}/300</p>
                   </div>
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-foreground">Sigurnosni savjeti</h3>
+                    <h3 className="text-sm font-semibold text-foreground">Safety tips</h3>
                     {[
-                      { emoji: "📹", text: "Koristi videopoziv za prvu lekciju ako ti je ugodnije" },
-                      { emoji: "🔒", text: "Ne dijeli osobne podatke odmah" },
-                      { emoji: "🚨", text: "Prijavi sumnjive korisnike" },
+                      { emoji: "📹", text: "Use a video call for the first lesson if you prefer" },
+                      { emoji: "🔒", text: "Don't share personal details right away" },
+                      { emoji: "🚨", text: "Report suspicious users" },
                     ].map(({ emoji, text }) => (
                       <div key={text} className="flex items-center gap-3 rounded-xl bg-card p-3 shadow-card">
                         <span className="text-xl">{emoji}</span>
@@ -376,7 +376,7 @@ const Onboarding = () => {
           disabled={!canProceed() || saving}
           className="mt-6 h-14 w-full rounded-2xl text-base font-semibold gradient-warm text-primary-foreground border-0 shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40"
         >
-          {saving ? "Spremam..." : step === steps.length - 1 ? "Počni koristiti SkillSwap" : "Nastavi"}
+          {saving ? "Saving..." : step === steps.length - 1 ? "Start using SkillSwap" : "Continue"}
           {!saving && <ArrowRight className="ml-2 h-5 w-5" />}
         </Button>
       </div>

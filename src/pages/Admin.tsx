@@ -81,16 +81,16 @@ const Admin = () => {
       toast({ title: label });
       await fetchAll();
     } catch (err: any) {
-      toast({ title: "Greška", description: err.message, variant: "destructive" });
+      toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {
       setActionLoading(null);
     }
   };
 
   const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-    { key: "users", label: "Korisnici", icon: <Users className="h-4 w-4" /> },
-    { key: "reports", label: "Prijave", icon: <Flag className="h-4 w-4" /> },
-    { key: "blocks", label: "Blokiranja", icon: <Ban className="h-4 w-4" /> },
+    { key: "users", label: "Users", icon: <Users className="h-4 w-4" /> },
+    { key: "reports", label: "Reports", icon: <Flag className="h-4 w-4" /> },
+    { key: "blocks", label: "Blocks", icon: <Ban className="h-4 w-4" /> },
   ];
 
   return (
@@ -131,7 +131,7 @@ const Admin = () => {
             {/* USERS */}
             {tab === "users" && (
               <div className="space-y-2">
-                <p className="text-xs text-muted-foreground mb-3">{users.length} korisnika ukupno</p>
+                <p className="text-xs text-muted-foreground mb-3">{users.length} users total</p>
                 {users.map((u, i) => (
                   <motion.div
                     key={u.user_id}
@@ -148,7 +148,7 @@ const Admin = () => {
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-sm truncate">{u.name ?? "—"}</span>
                         {u.is_admin && <Badge className="text-[10px] px-1.5 py-0 bg-primary">Admin</Badge>}
-                        {u.is_suspended && <Badge variant="destructive" className="text-[10px] px-1.5 py-0">Suspendiran</Badge>}
+                        {u.is_suspended && <Badge variant="destructive" className="text-[10px] px-1.5 py-0">Suspended</Badge>}
                       </div>
                       <p className="text-xs text-muted-foreground">{u.city ?? "—"}{u.age ? `, ${u.age}g` : ""}</p>
                     </div>
@@ -162,26 +162,26 @@ const Admin = () => {
                             disabled={actionLoading === u.user_id + "unsuspend"}
                             onClick={() => callAdminAction("unsuspend", u.user_id, `${u.name} reaktiviran`)}
                           >
-                            <RotateCcw className="h-3 w-3 mr-1" /> Reaktiviraj
+                            <RotateCcw className="h-3 w-3 mr-1" /> Reactivate
                           </Button>
                         ) : (
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button size="sm" variant="outline" className="h-8 px-2 text-xs text-amber-600 border-amber-200">
-                                <Ban className="h-3 w-3 mr-1" /> Suspendiraj
+                                <Ban className="h-3 w-3 mr-1" /> Suspend
                               </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Suspendiraj korisnika?</AlertDialogTitle>
+                                <AlertDialogTitle>Suspend user?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Korisnik {u.name} bit će suspendiran i odjavljan. Dobit će email obavijest.
+                                  {u.name} will be suspended and signed out. They will receive an email notification.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Odustani</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => callAdminAction("suspend", u.user_id, `${u.name} suspendiran`)}>
-                                  Suspendiraj
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => callAdminAction("suspend", u.user_id, `${u.name} suspended`)}>
+                                  Suspend
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -195,18 +195,18 @@ const Admin = () => {
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Obriši račun?</AlertDialogTitle>
+                              <AlertDialogTitle>Delete account?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                Račun korisnika {u.name} bit će trajno obrisan. Korisnik će dobiti email obavijest.
+                                {u.name}'s account will be permanently deleted. They will receive an email notification.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Odustani</AlertDialogCancel>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                onClick={() => callAdminAction("delete", u.user_id, `${u.name} obrisan`)}
+                                onClick={() => callAdminAction("delete", u.user_id, `${u.name} deleted`)}
                               >
-                                Obriši
+                                Delete
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -222,7 +222,7 @@ const Admin = () => {
             {tab === "reports" && (
               <div className="space-y-2">
                 {reports.length === 0 ? (
-                  <p className="py-20 text-center text-muted-foreground">Nema prijava</p>
+                  <p className="py-20 text-center text-muted-foreground">No reports</p>
                 ) : reports.map((r, i) => (
                   <motion.div
                     key={r.id}
@@ -234,7 +234,7 @@ const Admin = () => {
                     <div className="flex items-center justify-between">
                       <div className="text-sm">
                         <span className="font-medium">{r.reporter?.name ?? "—"}</span>
-                        <span className="text-muted-foreground"> prijavio/la </span>
+                        <span className="text-muted-foreground"> reported </span>
                         <span className="font-medium">{r.reported?.name ?? "—"}</span>
                       </div>
                       <span className="text-xs text-muted-foreground">
@@ -247,18 +247,18 @@ const Admin = () => {
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button size="sm" variant="outline" className="h-7 px-2 text-xs text-amber-600 border-amber-200">
-                              <Ban className="h-3 w-3 mr-1" /> Suspendiraj
+                              <Ban className="h-3 w-3 mr-1" /> Suspend
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Suspendiraj korisnika?</AlertDialogTitle>
-                              <AlertDialogDescription>Korisnik {r.reported?.name} bit će suspendiran i dobiti email obavijest.</AlertDialogDescription>
+                              <AlertDialogTitle>Suspend user?</AlertDialogTitle>
+                              <AlertDialogDescription>{r.reported?.name} will be suspended and receive an email notification.</AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Odustani</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => callAdminAction("suspend", r.reported_user_id, `${r.reported?.name} suspendiran`)}>
-                                Suspendiraj
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => callAdminAction("suspend", r.reported_user_id, `${r.reported?.name} suspended`)}>
+                                Suspend
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -266,18 +266,18 @@ const Admin = () => {
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button size="sm" variant="outline" className="h-7 px-2 text-xs text-destructive border-destructive/20">
-                              <Trash2 className="h-3 w-3 mr-1" /> Obriši račun
+                              <Trash2 className="h-3 w-3 mr-1" /> Delete account
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Obriši račun?</AlertDialogTitle>
-                              <AlertDialogDescription>Račun korisnika {r.reported?.name} bit će trajno obrisan.</AlertDialogDescription>
+                              <AlertDialogTitle>Delete account?</AlertDialogTitle>
+                              <AlertDialogDescription>{r.reported?.name}'s account will be permanently deleted.</AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Odustani</AlertDialogCancel>
-                              <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={() => callAdminAction("delete", r.reported_user_id, `${r.reported?.name} obrisan`)}>
-                                Obriši
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={() => callAdminAction("delete", r.reported_user_id, `${r.reported?.name} deleted`)}>
+                                Delete
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -293,7 +293,7 @@ const Admin = () => {
             {tab === "blocks" && (
               <div className="space-y-2">
                 {blocks.length === 0 ? (
-                  <p className="py-20 text-center text-muted-foreground">Nema blokiranja</p>
+                  <p className="py-20 text-center text-muted-foreground">No blocks</p>
                 ) : blocks.map((b, i) => (
                   <motion.div
                     key={b.id}
@@ -304,7 +304,7 @@ const Admin = () => {
                   >
                     <div className="text-sm">
                       <span className="font-medium">{b.blocker?.name ?? "—"}</span>
-                      <span className="text-muted-foreground"> blokirao/la </span>
+                      <span className="text-muted-foreground"> blocked </span>
                       <span className="font-medium">{b.blocked?.name ?? "—"}</span>
                     </div>
                     <span className="text-xs text-muted-foreground">

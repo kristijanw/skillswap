@@ -3,9 +3,9 @@ import { Flame, MessageCircle, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const allNavItems = [
-  { path: "/discover", icon: Flame, label: "Otkrij", adminOnly: false },
-  { path: "/matches", icon: MessageCircle, label: "Poruke", adminOnly: false },
-  { path: "/profile", icon: User, label: "Profil", adminOnly: false },
+  { path: "/discover", icon: Flame, label: "Discover", adminOnly: false },
+  { path: "/matches", icon: MessageCircle, label: "Messages", adminOnly: false },
+  { path: "/profile", icon: User, label: "Profile", adminOnly: false },
 ];
 
 const BottomNav = () => {

@@ -29,9 +29,9 @@ const VerifyEmail = () => {
     });
     setResending(false);
     if (error) {
-      toast({ title: "Greška", description: error.message, variant: "destructive" });
+      toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Email poslan!", description: "Provjeri inbox (i spam)." });
+      toast({ title: "Email sent!", description: "Check your inbox (and spam)." });
     }
   };
 
@@ -46,11 +46,11 @@ const VerifyEmail = () => {
           <Mail className="h-9 w-9 text-primary-foreground" />
         </div>
 
-        <h1 className="text-2xl font-bold font-display text-foreground">Provjeri email</h1>
+        <h1 className="text-2xl font-bold font-display text-foreground">Check your email</h1>
         <p className="mt-3 text-muted-foreground">
-          Poslali smo verifikacijski link na{" "}
+          We sent a verification link to{" "}
           <span className="font-medium text-foreground">{user.email}</span>.
-          Klikni link u emailu da aktiviraš račun.
+          Click the link in the email to activate your account.
         </p>
 
         <Button
@@ -60,14 +60,14 @@ const VerifyEmail = () => {
           className="mt-8 h-12 w-full rounded-xl"
         >
           <RefreshCw className={`mr-2 h-4 w-4 ${resending ? "animate-spin" : ""}`} />
-          {resending ? "Šalje se..." : "Pošalji ponovo"}
+          {resending ? "Sending..." : "Resend email"}
         </Button>
 
         <button
           onClick={signOut}
           className="mt-4 text-sm text-muted-foreground hover:text-foreground"
         >
-          Odjavi se
+          Sign out
         </button>
       </motion.div>
     </div>

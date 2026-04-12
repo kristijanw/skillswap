@@ -46,7 +46,7 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
 
     const oversized = toAdd.find((f) => f.size > 10 * 1024 * 1024);
     if (oversized) {
-      toast({ title: "Slika prevelika", description: "Maksimalno 10MB po slici", variant: "destructive" });
+      toast({ title: "Image too large", description: "Maximum 10MB per image", variant: "destructive" });
       e.target.value = "";
       return;
     }
@@ -65,7 +65,7 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 100 * 1024 * 1024) {
-      toast({ title: "Video prevelik", description: "Maksimalno 100MB", variant: "destructive" });
+      toast({ title: "Video too large", description: "Maximum 100MB", variant: "destructive" });
       return;
     }
     const objectUrl = URL.createObjectURL(file);
@@ -73,7 +73,7 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
     vid.src = objectUrl;
     vid.onloadedmetadata = () => {
       if (vid.duration > 60) {
-        toast({ title: "Video predug", description: "Maksimalno 1 minuta", variant: "destructive" });
+        toast({ title: "Video too long", description: "Maximum 1 minute", variant: "destructive" });
         e.target.value = "";
         URL.revokeObjectURL(objectUrl);
         return;
@@ -97,7 +97,7 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
   const handleAdd = async () => {
     if (!title.trim() || imageFiles.length === 0) return;
     if (works.length >= 5) {
-      toast({ title: "Maksimalno 5 radova", variant: "destructive" });
+      toast({ title: "Maximum 5 works", variant: "destructive" });
       return;
     }
     setUploading(true);
@@ -144,9 +144,9 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
 
       onWorksChange?.([...works, workData as Work]);
       resetForm();
-      toast({ title: "Rad dodan! ✅" });
+      toast({ title: "Work added! ✅" });
     } catch (err: any) {
-      toast({ title: "Greška", description: err.message, variant: "destructive" });
+      toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {
       setUploading(false);
     }
@@ -156,9 +156,9 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
     try {
       await supabase.from("works").delete().eq("id", work.id);
       onWorksChange?.(works.filter((w) => w.id !== work.id));
-      toast({ title: "Rad obrisan" });
+      toast({ title: "Work deleted" });
     } catch (err: any) {
-      toast({ title: "Greška", description: err.message, variant: "destructive" });
+      toast({ title: "Error", description: err.message, variant: "destructive" });
     }
   };
 
@@ -167,14 +167,14 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-foreground font-display">Moji radovi</h3>
+        <h3 className="text-sm font-semibold text-foreground font-display">My works</h3>
         {editable && works.length < 5 && (
           <button
             onClick={() => setShowForm(!showForm)}
             className="flex items-center gap-1 rounded-lg bg-secondary px-2.5 py-1.5 text-xs font-medium text-foreground hover:bg-secondary/80"
           >
             <Plus className="h-3.5 w-3.5" />
-            Dodaj rad
+            Add work
           </button>
         )}
       </div>
@@ -185,14 +185,14 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Naziv rada"
+            placeholder="Work title"
             className="rounded-xl"
             maxLength={80}
           />
           <Textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Opis (opcionalno)"
+            placeholder="Description (optional)"
             className="rounded-xl min-h-[80px]"
             maxLength={300}
           />
@@ -221,7 +221,7 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
               className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border py-4 text-sm text-muted-foreground hover:border-primary/50 hover:text-foreground transition-colors"
             >
               <Images className="h-4 w-4" />
-              {imageFiles.length === 0 ? "Dodaj slike (obavezno, max 5)" : `Dodaj još slika (${imageFiles.length}/5)`}
+              {imageFiles.length === 0 ? "Add images (required, max 5)" : `Add more images (${imageFiles.length}/5)`}
             </button>
           )}
 
@@ -242,20 +242,20 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-border py-3 text-sm text-muted-foreground hover:bg-secondary transition-colors"
             >
               <Play className="h-4 w-4" />
-              Dodaj video (opcionalno, max 1 min)
+              Add video (optional, max 1 min)
             </button>
           )}
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={resetForm} className="flex-1 rounded-xl">
-              Odustani
+              Cancel
             </Button>
             <Button
               onClick={handleAdd}
               disabled={uploading || !title.trim() || imageFiles.length === 0}
               className="flex-1 rounded-xl gradient-warm text-primary-foreground border-0"
             >
-              {uploading ? "Spremam..." : "Spremi"}
+              {uploading ? "Saving..." : "Save"}
             </Button>
           </div>
         </div>
@@ -263,7 +263,7 @@ const WorksSection = ({ userId, works, editable = false, onWorksChange }: WorksS
 
       {/* Works grid */}
       {works.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Još nema radova. Dodaj prvi!</p>
+        <p className="text-sm text-muted-foreground">No works yet. Add your first!</p>
       ) : (
         <div className="grid grid-cols-2 gap-2">
           {works.map((work) => (

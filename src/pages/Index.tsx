@@ -8,23 +8,23 @@ import { useAuth } from "@/contexts/AuthContext";
 const slides = [
   {
     icon: <Sparkles className="h-10 w-10 text-primary-foreground" />,
-    title: "Dobrodošao/la u SkillSwap",
-    description: "Razmijeni vještine s ljudima u tvojoj okolici. Uči i podučavaj – besplatno.",
+    title: "Welcome to SkillSwap",
+    description: "Exchange skills with people around you. Learn and teach – for free.",
   },
   {
     icon: <Users className="h-10 w-10 text-primary-foreground" />,
-    title: "Pronađi savršen match",
-    description: "Spajamo te s ljudima koji žele naučiti ono što ti znaš, a znaju ono što ti želiš naučiti.",
+    title: "Find your perfect match",
+    description: "We connect you with people who want to learn what you know, and know what you want to learn.",
   },
   {
     icon: <BookOpen className="h-10 w-10 text-primary-foreground" />,
-    title: "Uči što te zanima",
-    description: "Od kuhanja do programiranja – odaberi vještine koje te zanimaju i pronađi svog učitelja.",
+    title: "Learn what interests you",
+    description: "From cooking to programming – choose the skills you're interested in and find your teacher.",
   },
   {
     icon: <Star className="h-10 w-10 text-primary-foreground" />,
-    title: "Bez troškova",
-    description: "Nema plaćanja, nema pretplata. Samo razmjena znanja između pravih ljudi.",
+    title: "Completely free",
+    description: "No payments, no subscriptions. Just a knowledge exchange between real people.",
   },
 ];
 
@@ -70,7 +70,7 @@ const Index = () => {
       {/* Top bar */}
       <div className="flex w-full max-w-xs justify-end">
         <button onClick={() => navigate("/auth")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-          Preskoči
+          Skip
         </button>
       </div>
 
@@ -117,7 +117,7 @@ const Index = () => {
                 <span className="text-2xl">👆</span>
                 <ArrowRight className="h-4 w-4" />
               </motion.div>
-              <span className="text-xs text-muted-foreground/50">Povuci za nastavak</span>
+              <span className="text-xs text-muted-foreground/50">Swipe to continue</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -141,7 +141,7 @@ const Index = () => {
             onClick={() => navigate("/auth")}
             className="h-14 w-full rounded-2xl text-base font-semibold gradient-warm text-primary-foreground border-0 shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
-            Započni <ArrowRight className="ml-2 h-5 w-5" />
+            Get started <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         )}
 
@@ -150,7 +150,7 @@ const Index = () => {
           onClick={() => navigate("/auth?mode=login")}
           className="w-full text-muted-foreground hover:text-foreground"
         >
-          Već imam račun
+          Already have an account
         </Button>
       </div>
     </div>

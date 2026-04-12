@@ -117,7 +117,7 @@ const UserProfile = () => {
             <div className="mt-6 space-y-4">
               {teachSkills.length > 0 && (
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-foreground font-display">Može naučiti</h3>
+                  <h3 className="mb-2 text-sm font-semibold text-foreground font-display">Can teach</h3>
                   <div className="flex flex-wrap gap-2">
                     {teachSkills.map((s) => (
                       <Badge key={s} className="bg-primary text-primary-foreground border-0">{s}</Badge>
@@ -127,7 +127,7 @@ const UserProfile = () => {
               )}
               {learnSkills.length > 0 && (
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-foreground font-display">Želi naučiti</h3>
+                  <h3 className="mb-2 text-sm font-semibold text-foreground font-display">Wants to learn</h3>
                   <div className="flex flex-wrap gap-2">
                     {learnSkills.map((s) => (
                       <Badge key={s} variant="outline" className="border-primary/30 text-foreground">{s}</Badge>
