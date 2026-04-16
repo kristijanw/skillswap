@@ -1,37 +1,4 @@
 <div align="center">
-  <img src="public/android-chrome-192x192.png" width="100" alt="SkillSwap logo" />
-  <h1>SkillSwap</h1>
-  <p><strong>Razmijeni vještine. Uči od pravih ljudi. Besplatno.</strong></p>
-</div>
-
----
-
-## O aplikaciji
-
-**SkillSwap** je mobilna aplikacija koja spaja ljude koji žele razmjenjivati znanja i vještine — bez novca, bez posrednika. Ako znaš gitaru, a želiš naučiti programirati, SkillSwap će te povezati s nekim tko zna upravo to, a zauzvrat želi naučiti glazbu.
-
-Platforma je zamišljena kao lokalna zajednica učenja u kojoj svaki korisnik istovremeno može biti i učitelj i učenik.
-
-## Kako funkcionira?
-
-1. **Kreiraj profil** — unesi koje vještine možeš ponuditi i koje želiš naučiti
-2. **Otkrij ljude** — pregledavaj profile i lajkaj one koji te zanimaju
-3. **Match** — kada oboje lajkate jedan drugoga, otvara se chat
-4. **Dogovori se** — razmjenite znanje na način koji vama odgovara
-5. **Portfolio radova** — pokaži što znaš kroz slike i kratke videozapise
-
-## Mogućnosti
-
-- Prijava putem emaila ili Google računa
-- Swipe sučelje za otkrivanje korisnika
-- Međusobni chat u realnom vremenu
-- Portfolio radova s do 5 slika i videozapisom do 1 minute
-- Razine povjerenja (verificirani korisnici)
-- Prijava neprikladnog sadržaja
-
----
-
-<div align="center">
   <img src="public/android-chrome-192x192.png" width="80" alt="SkillSwap logo" />
   <h1>SkillSwap</h1>
   <p><strong>Swap skills. Learn from real people. For free.</strong></p>
