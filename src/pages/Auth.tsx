@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Sparkles, Mail, Lock, User, ArrowLeft } from "lucide-react";
+import { Mail, Lock, User, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -97,8 +97,8 @@ const Auth = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mx-auto mt-8 flex w-full max-w-sm flex-col items-center"
       >
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl gradient-warm shadow-glow">
-          <Sparkles className="h-7 w-7 text-primary-foreground" />
+        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl overflow-hidden shadow-glow">
+          <img src="/logo.png" alt="SkillSwap" className="h-full w-full object-contain" />
         </div>
 
         <h1 className="text-2xl font-bold font-display text-foreground">

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Sparkles, Users, BookOpen, Star } from "lucide-react";
+import { ArrowRight, Users, BookOpen, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 
 const slides = [
   {
-    icon: <Sparkles className="h-10 w-10 text-primary-foreground" />,
+    icon: <img src="/logo.png" alt="SkillSwap" className="h-20 w-20 object-contain" />,
     title: "Welcome to SkillSwap",
     description: "Exchange skills with people around you. Learn and teach – for free.",
   },
@@ -90,7 +90,7 @@ const Index = () => {
             onDragEnd={handleDragEnd}
             className="flex flex-col items-center text-center cursor-grab active:cursor-grabbing"
           >
-            <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-3xl gradient-warm shadow-glow animate-pulse-glow pointer-events-none">
+            <div className={`mb-8 flex h-24 w-24 items-center justify-center rounded-3xl pointer-events-none ${step === 0 ? "" : "gradient-brand shadow-glow animate-pulse-glow"}`}>
               {slide.icon}
             </div>
             <h1 className="text-3xl font-bold font-display text-foreground">{slide.title}</h1>
